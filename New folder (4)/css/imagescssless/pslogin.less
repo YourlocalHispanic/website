@@ -1,0 +1,360 @@
+/* Login Page specific styles */
+.pslogin {
+  background-image: url("../img/back.png");
+  background-position: left top;
+  background-repeat: repeat-x;
+  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.07) 0%,
+  rgba(255, 255, 255, 0) 100%);
+  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.07) 0%,
+  rgba(255, 255, 255, 0) 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0, 0,
+  0, 0.07)), color-stop(1, rgba(255, 255, 255, 0)));
+  background-image: linear-gradient(top, rgba(0, 0, 0, 0.07) 0%,
+  rgba(255, 255, 255, 0) 100%);
+  background-attachment: fixed;
+  #container, &.uiContMax #container {
+    margin: 0 auto 60px;
+    padding-top: 20px;
+    background: none;
+    min-width: 300px;
+    max-width: 3000px;
+    width: 650px;
+    border: none;
+    box-shadow: none
+  }
+  #content {
+    background-color: #FFF;
+    -moz-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    position: relative;
+    padding-bottom: 1px;
+  }
+  #content-main {
+    padding: 0 20px 10px;
+    margin: 0;
+  }
+  #branding-district {
+    /* Branding Styles for District */
+    width: -webkit-calc(~"100% - 20px");
+    width: calc(~"100% - 20px");
+    padding: 0;
+    margin: 10px 10px;
+    background-image: url("../district-logos/districtlogo.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100px;
+    line-height: 40px;
+  }
+  #branding-powerschool {
+    width: 100%;
+    padding: 0;
+    background-color: @breadcrumb-background;
+    background-image: url("../img/powerschool-white.svg");
+    background-position: 15px center;
+    background-size: auto 30px;
+    height: 60px;
+    line-height: 40px;
+    a {
+      text-align: center;
+      width: 100%;
+      height: 40px;
+    }
+  }
+  img {
+    vertical-align: middle;
+  }
+  #powerschoolcorplink,
+  #poweredbypowerschool {
+    text-align: left;
+    line-height: 1em;
+  }
+  h2 {
+    margin: 20px;
+    color: #002850;
+  }
+  p {
+    margin-bottom: 5px;
+  }
+  .button-row {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    button {
+      margin-left: 0;
+      .flex-basis(0);
+      &.full-width{
+        width: 100%;
+      }
+    }
+  }
+  /* login forms */
+  fieldset {
+    border: none;
+    margin-bottom: 0;
+    div {
+      .flex-display;
+      .justify-content(space-between);
+      margin: 0;
+      > &:nth-of-type(odd):not(.button-row) {
+        background-color: @zebra;
+      }
+      &.button-row {
+        margin-right: 0;
+        margin-left: 0;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        display: block;
+      }
+    }
+    label {
+      line-height: 2.75em;
+    }
+    input[type="text"],
+    input[type="password"] {
+      margin: 0 5px 0 0;
+      padding: 10px;
+      border: 1px solid @border-color;
+      background-color: #FFFFFF;
+      width: -webkit-calc(~"50% - 22px");
+      width: calc(~"50% - 22px");
+    }
+    .nocalc & input,
+    .nocalc & select {
+      margin: 0 10px;
+      width: 40%;
+    }
+    select {
+      margin: 0 5px;
+      padding: 10px;
+      width: -webkit-calc(~"50% - 0px");
+      width: calc(~"50% - 0px");
+      border-radius: 0;
+      background-color: #FFFFFF;
+      border: 1px solid #cccccc;
+        -webkit-box-shadow: none;
+    }
+  }
+    #userIDUnavailable {
+        margin: 20px 0;
+        ul {
+            width: 70%;
+            margin: 0 10px;
+            li {
+                list-style: none;
+                }
+        }
+    }
+  #login-help {
+    background-color: transparent;
+    text-align: center;
+    justify-content: space-around;
+  }
+  #parent-create {
+    & & label {
+      width: 40%;
+    }
+    & & input[type="text"],
+    & & input[type="password"] {
+      width: 35%;
+    }
+    #container {
+      min-width: 800px;
+      max-width: 3000px;
+      width: 800px;
+      border: none;
+    }
+  }
+  #server-stats {
+    padding: 20px;
+  }
+  #signin-custom-message {
+    border: @border-style;
+    border-radius: @border-radius-med;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+    max-height: 300px;
+    max-width: 620px;
+    padding: 10px;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    margin: 0 20px 20px;
+  }
+  #login-server-details {
+    text-align: center;
+    display: none;
+  }
+  ::-moz-selection,
+  ::selection {
+    background: #666;
+  }
+  #footer {
+      margin-left: 0px;
+      margin-top: 20px;
+    width: 100%;
+    text-align: left;
+  }
+  #legal {
+     display: inline-block;
+     text-align: left;
+  }
+  .tabs {
+    margin-bottom: 0;
+  }
+  #noscript {
+    margin: 0 20px 20px;
+  }
+  span.error {
+    /* span.error inserted by 4J code with br tag */
+    margin-bottom: 0;
+  }
+
+  @media only screen and (max-width: 480px) {
+    background-image: none;
+    #container,
+    &.uiContMax #container{
+      width: 100%;
+      margin: 0;
+      #parent-create #container {
+        width: 100%;
+        min-width: 300px;
+      }
+    }
+    #branding-powerschool {
+      margin: 0 0 20px 0;
+    }
+    #content {
+      box-shadow: none;
+    }
+
+    legend {
+      background-color: #FFF;
+      color: #000;
+    }
+    #footer {
+      margin-bottom: 20px;
+    }
+    fieldset {
+      div {
+        .flex-direction(column);
+      }
+      label,
+      .input-note {
+        width: auto;
+        display: block;
+        margin: 0;
+        & + a {
+          margin-left: 10px;
+        }
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"]	{
+        margin-left: 10px;
+        margin-bottom: 6px;
+        width: -webkit-calc(~"100% - 40px");
+        width: calc(~"100% - 40px");
+      }
+      select {
+        margin-left: 10px;
+        margin-bottom: 6px;
+        width: -webkit-calc(~"100% - 20px");
+        width: calc(~"100% - 20px");
+      }
+      input[type="radio"]+label,
+      input[type="checkbox"]+label {
+        width: auto;
+        display: inline-block;
+      }
+
+      &.divColumns {
+        & > div {
+          display: block;
+          margin-right: 2px;
+          border: none;
+          &:nth-child(even) {
+            background-color: @zebra;
+          }
+          &.button-box {
+            padding-top: 5px;
+            text-align: right;
+            background-color: transparent;
+          }
+        }
+      }
+    }
+    button {
+      height: 40px;
+    }
+    #password-with-meter {
+      width: -webkit-calc(~"100% - 10px");
+      width: calc(~"100% - 10px");
+      padding-right: 5px;
+      .flex-direction()
+    }
+    #password-strength-meter {
+      display: inline-block;
+    }
+    #myForm_accountInfo_password {
+      width: -webkit-calc(~"100% - 130px");
+      width: calc(~"100% - 130px");
+    }
+  }
+    /* end login page styles */
+}
+#password-strength-meter {
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+.pslogin #myForm_accountInfo_password {
+  width: -webkit-calc(~"100% - 130px");
+  width: calc(~"100% - 130px");
+}
+#password-with-meter {
+  width: 50%;
+  padding-right: 5px;
+}
+#password-meter {
+  display: inline-block;
+  height: -webkit-calc(~"2.75em - 2px");
+  height: calc(~"2.75em - 2px");
+  width: 100px;
+  border: 1px solid @border-color;
+  margin: 0;
+  padding: 0;
+  color: #000;
+  background-color: #FFF;
+  position: relative;
+}
+
+#password-meter-strength {
+  display: inline-block;
+  height: -webkit-calc(~"2.75em - 2px");
+  height: calc(~"2.75em - 2px");
+  width: 0;
+  margin: 0;
+  max-width: 100px;
+  background-color: #006600;
+  padding: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+#password-meter-description {
+  display: inline-block;
+  line-height: 2.75em;
+  position: absolute;
+  top: 0;
+  left: 10px;
+  right: 10px;
+  text-align: center;
+  text-shadow: 1px 0 2px #FFFFFF, 0 1px 2px #FFFFFF, -1px 0 2px #FFFFFF, 0 -1px 2px #FFFFFF;
+}
+#password-rules {
+  .divPwdRule {
+    margin: 10px;
+    padding: 0;
+  }
+}

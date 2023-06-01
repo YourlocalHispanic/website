@@ -1,0 +1,68 @@
+/*jQuery Grid Override Css Styles*/
+.ui-jqgrid .ui-jqgrid-title {
+    margin: .1em 0 .2em;
+    span.ui-jqgrid-copyperms-gridsearch-label {
+        padding-inline-start: 60px;
+    }
+}
+/*
+ * RTL support - keep 'float: left' as it will flip to right with postcss script. 'rtl' suffix appended to class in jqGrid when direction attr set to "rtl".
+ * Data Export Manager - Select “Tables” and Select Export from any option (Rooms) → Select all Fields → Click “Next” → Click “Show Records”.
+ * Location: /admin/datamgmt/exportmanager.action
+ */
+.ui-jqgrid .ui-jqgrid-hbox-rtl {float: left; padding-inline-end: 20px; padding-left: 0px}
+// First Row of JQGrid
+[dir="rtl"] .ui-jqgrid tr.jqgfirstrow td {border-right-style: none;}
+.ui-jqgrid tr.ui-row-rtl td {border-inline-end-width: 1px; text-align: unset;}
+
+/* RTL Support - /admin/groups/copyperms.html Caption Filter RTL ordering */
+[dir="rtl"] .ui-jqgrid span.ui-jqgrid-title-rtl {float:none}
+.ui-jqgrid .ui-jqgrid-title-rtl {
+    margin: .1em 0 .2em;
+    span#id_caption_filter {
+        display: flex;
+        input#cb_lgridcopy {
+            order: 1;
+        }
+        span.ui-jqgrid-copyperms-select-all-label {
+            order: 2;
+        }
+        span.ui-jqgrid-copyperms-gridsearch-label {
+            order: 3;
+            padding-inline-start: 60px;
+        }
+        input#gridsearch {
+            order: 4;
+        }
+    }
+}
+/*
+ * RTL Suport - Styles to move Legend text from right to left. Logic in jqGrid library, thus overwrite with RTL format using css.
+ * Pages Affected: /admin/datamgmt/exportmanager.action and /admin/district/datavalidation/ruleStatus.action
+ */
+[dir="rtl"] .ui-jqgrid .ui-jqgrid-pager .ui-pager-control > table.ui-pg-table > tbody > tr {
+    display: flex;
+    justify-content: space-between;
+    td:nth-child(1) {
+        order: 3;
+    }
+    td:nth-child(2) {
+        order: 2;
+    }
+    td:nth-child(3) {
+        order: 1;
+    }
+}
+// RTL: Set Arrow Icons for Sorting in Columns to left side of column text
+[dir="rtl"] .ui-jqgrid span.ui-sort-rtl {
+    left: unset;
+}
+// RTL: Set Page Permission options to left and filters to right for pageperms.html
+.ui-jqgrid .ui-jqgrid-titlebar {
+    .ui-jqgrid-title-rtl > .ui-jqgrid-pageperms-caption,
+    .ui-jqgrid-title > .ui-jqgrid-pageperms-caption {
+        display: flex;
+        justify-content: space-between;
+        padding-inline-end: 20px;
+    }
+}

@@ -1,0 +1,54 @@
+a.comphelppopup {
+  position: relative;
+  display: inline-block;
+  color: #0066A5;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual comphelppopup */
+span.comphelppopuptext {
+  &:not(.concealed) {
+    display: block;
+  }
+  width: 180px;
+  height: 126px;
+  background-color: #ffffff;
+  color: #444444;
+  text-align: center;
+  border-radius: 0px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  top: 28px;
+  bottom: 125%;
+  left: 67%;
+  margin-left: -100px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #cccccc;
+}
+
+span div.comphelppopupHeader{
+  background-color: #eeeeee;
+  color: #707070;
+  text-align: left;
+  position:absolute;
+  top:0px;
+  height: 16px;
+  width:90%;
+  padding: 4px 4px 8px 14px;
+}
+span div.comphelppopupLines{
+  text-align: left;
+  height: 16px;
+  width:100%;
+  padding: 4px 4px 8px 4px;
+}
+span div.comphelppopupLines.systemHelp{
+  margin-top: 20px;
+}
+

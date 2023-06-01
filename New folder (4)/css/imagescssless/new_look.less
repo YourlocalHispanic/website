@@ -1,0 +1,3370 @@
+@font-face {
+	font-family: "Karla";
+	src: url("/scripts/pds/fonts/karla-latin-700.woff") format("woff"),
+		local("Karla");
+}
+
+@favorites-anchor: 240px;
+
+.tippy-content {
+	font-family: Helvetica, Arial, sans-Serif;
+}
+
+.grid-mixin(@row, @column-start, @column-span, @row-span, @area) {
+	-ms-grid-row: @row;
+	-ms-grid-row-span: @row-span;
+	-ms-grid-column: @column-start;
+	-ms-grid-column-span: @column-span;
+
+	grid-area: @area;
+}
+
+body {
+
+	#container.pds-left-nav #breadcrumbs div.breadcrumbs,
+	#container-frame.pds-left-nav #breadcrumbs div.breadcrumbs,
+	#container-frame.details_view #breadcrumbs div.breadcrumbs 
+	{
+		@media screen {
+			display: none;
+		}
+	}
+
+	@media screen and (min-width: 769px) {
+
+		#container-frame:not(.pds),
+		#container:not(.pds) {
+			>#content-main {
+				overflow: unset;
+			}
+			>#breadcrumbs {
+				.back-button {
+					display: none;
+				}
+			}
+		}
+
+		#container-frame.pds,
+		#container.pds {
+			&.pds-left-nav {
+				>#content-main {
+					overflow: auto;
+
+					ul.tabs,
+					ul.ui-tabs-nav {
+						&:not(.shown_tabs) {
+							display: none;
+						}
+					}
+					.box-round, fieldset {
+						&:not(.screen_readers_only):not(.noborder) {
+							min-width: fit-content;
+						}
+					}
+				}
+				>#breadcrumbs {
+					.back-button {
+						display: flex;
+						margin-block: auto;
+						padding-inline-start: 20px;
+						a {
+							margin-inline: 5px;
+						}
+					}
+				}
+			}
+
+			&:not(.pds-left-nav) {
+				overflow: unset;
+			}
+
+		}
+
+		#container-frame.pds>#content-main {
+
+			ul.tabs,
+			ul.ui-tabs-nav {
+				&:not(.shown_tabs) {
+					display: none;
+				}
+			}
+
+			overflow: auto;
+		}
+
+		&.powerlunch-new {
+			#container {
+				// example page: /admin/powerlunch/startsale.html?ac=startservingbreakfast
+				overflow-y: hidden;
+				display: grid;
+				min-width: 632px;
+				grid-template-columns: 100%;
+				grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+				grid-template-areas:
+					"header"
+					"breadcrumbs"
+					"main";
+
+				&.anchor-favorites {
+					grid-template-columns: 1fr @favorites-anchor;
+					grid-template-areas:
+						"header header"
+						"breadcrumbs favorites"
+						"main favorites";
+					pss-favorites-menu-container {
+						grid-area: favorites;
+					}
+				}
+
+				& #btnNoNav {
+					left: 5px;
+				}
+
+				.nav {
+					display: none;
+				}
+
+				#content-lunch {
+					overflow-y: auto;
+					height: ~"calc(100vh - 97px)";
+					grid-area: main;
+				}	
+
+				.pds-scope {
+					position: absolute;
+					left: -9999px;
+				}
+			}
+		}
+
+		&:not(.powerlunch-new) {
+			&.quickdata {
+				// example page: /admin/home.html (at least one chart being displayed in Quick Data section
+				>#container.pds {
+					display: grid;
+					min-width: 632px;
+					grid-template-columns: 110px ~"calc(75vw - 55px)" ~"calc(25vw - 55px)";
+					grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+					grid-template-areas:
+						"header header header"
+						"nav breadcrumbs breadcrumbs"
+						"nav main data";
+
+					&.anchor-favorites {
+						grid-template-columns: 110px 3fr 1fr @favorites-anchor;
+						grid-template-areas:
+							"header header header header"
+							"nav breadcrumbs breadcrumbs favorites"
+							"nav main data favorites";
+						pss-favorites-menu-container {
+							grid-area: favorites;
+						}
+					}
+
+					#btnNoNav {
+						display: none;
+					}
+
+					#pds-left-nav-wrapper,
+					#nav-main-frame {
+						width: auto;
+
+						ul {
+
+							&.pds-primary-nav-list,
+							&.pds-app-nav {
+								margin: 0;
+							}
+
+							//This should only apply to the list items in the main nav area so we use the direct descendent on the li.
+							&.pds-primary-nav-list>li {
+
+								a,
+								span {
+									display: flex;
+								}
+							}
+						}
+					}
+
+					#breadcrumbs {
+						>div.scope {
+							height: 100%;
+						}
+					}
+				}
+
+				&.uiNoNav>#container.new {
+					display: grid;
+					min-width: 632px;
+					grid-template-columns: 182px 90px minmax(min-content, 6fr) 2fr;
+					grid-template-rows: 61px 36px auto;
+					grid-template-areas:
+						"header header header header"
+						"breadcrumbs breadcrumbs breadcrumbs breadcrumbs"
+						"main main main data";
+
+					& #btnNoNav {
+						left: 5px;
+					}
+
+					.nav {
+						display: none;
+					}
+				}
+
+				&:not(.uiNoNav)>#container.new:not(.pds) {
+					display: grid;
+					min-width: 632px;
+					grid-template-columns: 182px 90px minmax(min-content, 6fr) 2fr;
+					grid-template-rows: 61px 36px auto;
+					grid-template-areas:
+						"header header header header"
+						"nav breadcrumbs breadcrumbs breadcrumbs"
+						"nav main main data";
+
+					#btnNoNav {
+						left: -2px;
+					}
+				}
+			}
+
+			&:not(.quickdata) {
+				&:not(.noquickdata) {
+					&.uiNoNav {
+
+						& #container.new,
+						#container-frame.new {
+							height: 100%;
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: auto;
+							grid-template-rows: 61px 36px auto;
+							grid-template-areas:
+								"header"
+								"breadcrumbs"
+								"main";
+
+							& #btnNoNav {
+								left: 5px;
+							}
+						}
+
+						.nav {
+							display: none;
+						}
+					}
+
+					&:not(.uiNoNav) {
+						// example page: /admin/health/health_daily_log.html
+						& #container.pds {
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: 110px ~"calc(75vw - 55px)" ~"calc(25vw - 55px)";
+							grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+							grid-template-areas:
+								"header header header"
+								"nav breadcrumbs breadcrumbs"
+								"nav main main";
+
+							&.anchor-favorites {
+								grid-template-columns: 110px 3fr 1fr @favorites-anchor;
+								grid-template-areas:
+									"header header header header"
+									"nav breadcrumbs breadcrumbs favorites"
+									"nav main main favorites";
+								pss-favorites-menu-container {
+									grid-area: favorites;
+								}
+							}
+
+							#btnNoNav {
+								display: none;
+							}
+
+							#pds-left-nav-wrapper,
+							#nav-main-frame {
+								width: auto;
+
+								ul {
+
+									&.pds-primary-nav-list,
+									&.pds-app-nav {
+										margin: 0;
+									}
+
+									//This should only apply to the list items in the main nav area so we use the direct descendent on the li.
+									&.pds-primary-nav-list>li {
+
+										a,
+										span {
+											display: flex;
+										}
+									}
+								}
+							}
+
+							#breadcrumbs {
+								>div.scope {
+									height: 100%;
+								}
+							}
+						}
+
+						& #container.new:not(.pds) {
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: 182px 90px auto;
+							grid-template-rows: 61px 36px auto;
+							grid-template-areas:
+								"header header header"
+								"nav breadcrumbs breadcrumbs"
+								"nav main main";
+
+							#btnNoNav {
+								left: -2px;
+							}
+
+							.nav {
+								background-image: linear-gradient(to right, #f4f7fa 0, #f4f7fa 207px, #ccc 208px, #fff 209px);
+							}
+						}
+
+						& #container-frame.pds {
+							&:not(.pds-left-nav) {
+								// example page: /admin/sections/white.html
+								display: grid;
+								min-width: 632px;
+								grid-template-columns: 208px auto;
+								grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+								grid-template-areas:
+									"header header"
+									"nav breadcrumbs"
+									"nav main";
+
+								&.anchor-favorites {
+									grid-template-columns: 208px auto @favorites-anchor;
+									grid-template-areas:
+										"header header header"
+										"nav breadcrumbs favorites"
+										"nav main favorites";
+									pss-favorites-menu-container {
+										grid-area: favorites;
+									}
+								}
+
+								#btnNoNav {
+									left: 0;
+								}
+
+								.nav {
+									background-image: linear-gradient(to right, #f4f7fa 0, #f4f7fa 207px, #ccc 208px, #fff 209px);
+
+									#container-frame-menu {
+										width: 205px;
+									}
+								}
+
+								&.details_view {
+									// example page: /admin/students/schedule.html?frn=001634
+									overflow: hidden;
+									display: grid;
+									min-width: 632px;
+									height: 100vh;
+									width: 100vw;
+									grid-template-columns: auto 1fr;
+									grid-template-rows: 61px auto 1fr;
+									grid-template-areas:
+										"header header"
+										"breadcrumbs breadcrumbs"
+										"nav main";
+
+									&.anchor-favorites {
+										grid-template-columns: auto 1fr @favorites-anchor;
+										grid-template-areas:
+											"header header header"
+											"breadcrumbs breadcrumbs favorites"
+											"nav main favorites";
+										pss-favorites-menu-container {
+											grid-area: favorites;
+										}
+									}
+
+									#btnNoNav,
+									#branding-powerschool,
+									#hamburguesa-button {
+										display: none;
+									}
+
+									#content-main {
+										.back-button {
+											display: flex;
+											margin-block: 8px;
+											padding-inline-start: 20px;
+											a {
+												margin-inline: 5px;
+											}
+											~#page-heading-div {
+												h1 {
+													margin-block: 0 25px;
+													margin-inline: 20px;
+												}
+											}
+										}
+
+										.grid-mixin(3, 2, 2, 1, main);
+										min-height: unset;
+										background: #F1F1F4;
+
+										.ui-tabs.ui-widget-content {
+											background: #F1F1F4;
+										}
+
+										.box-round,
+										fieldset {
+											background: #ffffff;
+											&:not(.screen_readers_only):not(.noborder) {
+                                                min-width: fit-content;
+                                            }
+										}
+									}
+
+									#details-view-nav {
+										grid-area: nav;
+										overflow-y: auto;
+
+										#close-button-container,
+										#user-menu-button-container {
+											display: none;
+										}
+
+										.pds-vertical-tabs {
+											border-inline-end: 1px solid #C4C9CA;
+											background: #FFFFFF;
+											list-style: none;
+											-webkit-box-flex: 1;
+											-ms-flex: 1 1 auto;
+											flex: 1 1 auto;
+											width: 210px;
+											height: 100%;
+											margin: 0;
+											padding: 0;
+											font-family: Open Sans, sans-serif;
+											font-weight: 400;
+											font-size: 14px;
+											line-height: 24px;
+											-webkit-box-sizing: border-box;
+											box-sizing: border-box;
+											overflow-x: hidden;
+
+											>li {
+												min-height: 53px;
+												list-style: none;
+
+												&:focus {
+													border: none;
+												}
+
+												>details {
+													display: flex;
+													flex-direction: row;
+													color: #333333;
+													text-decoration: none;
+													cursor: pointer;
+													width: 170px;
+
+													&[open] {
+														>summary {
+															background-color: #F1F4F4;
+															&:hover {
+																text-decoration: underline;
+																background-color: #F1F4F4;
+															}
+														}
+													}
+
+													>summary {
+														list-style: none;
+														padding: 15px 20px 15px 20px;
+														width: 100%;
+														position: relative;
+
+														&::-webkit-details-marker {
+															display: none;
+														}
+
+														>span {
+															padding: 0;
+															display: flex;
+															margin: 0 5px 0 0;
+
+															&::after {
+																content: "";
+																position: absolute;
+																inset: calc(50% - 5px) 185px;
+																opacity: .5;
+																border-inline-start: 6px solid #677274;
+																border-block-start: 5px solid transparent;
+																border-block-end: 5px solid transparent;
+															}
+														}
+
+														&.pds-is-active {
+															background-color: #C2E2FF !important;
+															font-weight: 600;
+															border-left: none;
+
+															>span::after {
+																opacity: 1;
+															}
+
+															&:hover {
+																background-color: #c2e2ff;
+															}
+
+															a {
+																background: unset;
+															}
+														}
+
+														&:hover,
+														&:focus {
+															background-color: #F1F4F4;
+															text-decoration: underline;
+															outline: none;
+														}
+
+														&:focus {
+															outline: none;
+														}
+
+														&:hover {
+															text-decoration: underline;
+															background-color: #F1F4F4;
+														}
+
+														pds-icon svg {
+															display: none;
+															height: 20px;
+															width: 20px;
+														}
+													}
+
+													>div.fly-out-container {
+														position: absolute;
+														margin-inline-start: 210px;
+														z-index: 800;
+														background: white;
+														box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+														display: flex;
+														flex-direction: column;
+														flex-wrap: wrap;
+														padding: 5px 15px;
+
+														.back {
+															display: none;
+														}
+
+														&.adjusted-padding {
+															padding: 15px 15px 5px;
+															height: fit-content;
+														}
+
+														div.subcategory {
+															height: max-content;
+															padding-block-end: 20px;
+															padding-block-start: 10px;
+
+															>h3 {
+																border-bottom: none;
+																margin-inline: 10px 0;
+																margin-block: 0;
+																padding-block: 0;
+																height: auto;
+																display: flex;
+																align-items: center;
+
+																>span {
+																	font-family: 'Open Sans';
+																	font-style: normal;
+																	font-weight: 600;
+																	font-size: 18px;
+																	line-height: 27px;
+																	color: #0075db;
+																	padding-block: 5px;
+																	float: unset;
+																	text-align: start;
+																}
+															}
+
+															>ul {
+																display: flex;
+																min-width: 200px;
+																max-width: 210px;
+																list-style: none;
+																flex-direction: column;
+																flex-wrap: wrap;
+																margin: 0;
+
+																li {
+																	list-style: none;
+																	width: 210px;
+
+																	&.app-link {
+																		margin: 2px 0;
+
+																	}
+
+																	>a {
+																		padding: 0 15px;
+																		align-items: center;
+																		font-size: 14px;
+																		line-height: 21px;
+																		padding: 5px 10px 6px;
+																		border-radius: 4px;
+
+																		&:hover,
+																		&:focus {
+																			background-color: #F1F4F4;
+																			text-decoration: underline;
+																			outline: none;
+																		}
+
+																		.pds-is-active {
+																			border-left: none;
+
+																			&:hover,
+																			&:focus {
+																				background-color: #c2e2ff;
+																			}
+																		}
+																	}
+																}
+															}
+														}
+
+														div.fly-out-menu-item {
+															height: max-content;
+															margin-block-start: 10px;
+
+															>a {
+																align-items: center;
+																font-size: 14px;
+																line-height: 21px;
+																padding: 5px 10px 6px;
+																border-radius: 4px;
+																&.app-link {
+
+																	&:hover,
+																	&:focus {
+																		background-color: #F1F4F4;
+																		text-decoration: underline;
+																		outline: none;
+																	}
+																}
+
+																&.pds-is-active {
+																	background-color: #c2e2ff;
+																	border-left: none;
+
+																	&:hover,
+																	&:focus {
+																		background-color: #c2e2ff;
+																	}
+																}
+															}
+														}
+													}
+
+													ul {
+														list-style: none;
+
+														li.app-link {
+															&.pds-is-active {
+																background-color: #C2E2FF;
+																font-weight: 600;
+																border-left: none;
+
+																&:hover {
+																	text-decoration: underline;
+																	background-color: #C2E2FF;
+																}
+
+															}
+
+															&:hover {
+																background-color: #F1F4F4;
+																text-decoration: underline;
+															}
+
+															a {
+																padding: 5px 6px;
+															}
+														}
+													}
+												}
+
+												>a {
+													display: -webkit-box;
+													display: -ms-flexbox;
+													display: flex;
+													color: #333333;
+													position: relative;
+													text-decoration: none;
+													padding: 15px 15px 14px 20px;
+													cursor: pointer;
+													overflow-wrap: break-word;
+
+													&:hover,
+													&:focus {
+														background-color: #F1F4F4;
+													}
+
+													>.pds-vertical-tab-text {
+														max-width: 100%;
+														margin: 0;
+														padding: 0;
+														-webkit-box-sizing: border-box;
+														box-sizing: border-box;
+													}
+												}
+											}
+										}
+									}
+
+									.menuOverlay {
+										display: none;
+									}
+
+									#breadcrumbs {
+										.breadcrumbs {
+											display: none;
+										}
+										#currentscope {
+											align-items: unset;
+											padding-right: 10px;
+
+											div.dropdowncontainer {
+												margin-top: 4px;
+											}
+										}
+									}
+								}
+							}
+
+							&.pds-left-nav {
+								// example page: /admin/bulletin/listItems.action
+								display: grid;
+								min-width: 632px;
+								grid-template-columns: 110px auto;
+								grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+								grid-template-areas:
+									"header header"
+									"nav breadcrumbs"
+									"nav main";
+
+								&.anchor-favorites {
+									grid-template-columns: 110px auto @favorites-anchor;
+									grid-template-areas:
+										"header header header"
+										"nav breadcrumbs favorites"
+										"nav main favorites";
+									pss-favorites-menu-container {
+										grid-area: favorites;
+									}
+								}
+
+								#btnNoNav {
+									display: none;
+								}
+							}
+
+							#pds-left-nav-wrapper,
+							#nav-main-frame {
+								width: auto;
+
+								ul {
+
+									&.pds-app-nav,
+									&.pds-primary-nav-list {
+										margin: 0;
+									}
+
+									//This should only apply to the list items in the main nav area so we use the direct descendent on the li.
+									&.pds-primary-nav-list>li {
+
+										a,
+										span {
+											display: flex;
+										}
+									}
+								}
+							}
+
+							#breadcrumbs {
+								>div.scope {
+									height: 100%;
+								}
+							}
+						}
+
+						& #container-frame.new:not(.pds) {
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: auto;
+							grid-template-rows: 61px 36px auto;
+							grid-template-areas:
+								"header"
+								"breadcrumbs"
+								"main";
+						}
+					}
+				}
+
+				&.noquickdata {
+					&.uiNoNav {
+						& #container.new {
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: auto 40px;
+							grid-template-rows: 61px 36px auto;
+							grid-template-areas:
+								"header header"
+								"breadcrumbs breadcrumbs"
+								"main data";
+
+							& #btnNoNav {
+								left: 5px;
+							}
+
+							.nav {
+								display: none;
+							}
+						}
+					}
+
+					&:not(.uiNoNav) {
+						& #container.pds {
+							// example page: /admin/home.html with all the Quick Data charts hidden
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: 110px ~"calc(100vw - 150px)" 40px;
+							grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+							grid-template-areas:
+								"header header header"
+								"nav breadcrumbs breadcrumbs"
+								"nav main data";
+
+							&.anchor-favorites {
+								grid-template-columns: 110px 1fr 40px @favorites-anchor;
+								grid-template-areas:
+									"header header header header"
+									"nav breadcrumbs breadcrumbs favorites"
+									"nav main data favorites";
+									pss-favorites-menu-container {
+										grid-area: favorites;
+									}
+							}
+
+							#btnNoNav {
+								display: none;
+							}
+
+							#pds-left-nav-wrapper,
+							#nav-main-frame {
+								width: auto;
+
+								ul {
+
+									&.pds-primary-nav-list,
+									&.pds-app-nav {
+										margin: 0;
+									}
+
+									//This should only apply to the list items in the main nav area so we use the direct descendent on the li.
+									&.pds-primary-nav-list>li {
+
+										a,
+										span {
+											display: flex;
+										}
+									}
+								}
+							}
+
+							#breadcrumbs {
+								>div.scope {
+									height: 100%;
+								}
+							}
+						}
+
+						& #container.new:not(.pds) {
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: 182px 90px minmax(min-content, 6fr) 40px;
+							grid-template-rows: 61px 36px auto;
+							grid-template-areas:
+								"header header header header"
+								"nav breadcrumbs breadcrumbs breadcrumbs"
+								"nav main main data";
+						}
+
+						#btnNoNav {
+							left: -2px;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	div.studentAlert.pds {
+		display: flex;
+		width: auto;
+
+		div {
+			&.alertContent {
+				margin-left: 50px;
+				margin-right: 50px;
+			}
+
+			p.user-photo {
+				width: 188px;
+				height: 250px;
+			}
+		}
+	}
+
+	.student_details {
+		display: flex;
+		margin: 0 5px 0 10px;
+		width: 100%;
+
+		#openPowersearchModal {
+			color: #0075db;
+		}
+
+		.student_details_container {
+			display: flex;
+			margin-top: 8px;
+			width: 100%;
+
+			.student_details_avatar {
+				display: flex;
+				width: auto;
+				margin-left: 10px;
+				margin-right: 10px;
+				margin-bottom: 8px;
+
+				a {
+					position: relative;
+					top: 0;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					margin: auto;
+					display: inline-block;
+					height: fit-content;
+				}
+			}
+
+			.student_details_info {
+				display: flex;
+				flex-direction: column;
+				margin-left: 10px;
+				width: 100%;
+
+				.student_details_info_name {
+					margin: 0;
+					border: none;
+					padding: 0;
+					line-height: 30px;
+					display: flex;
+					align-items: center;
+					color: #333333;
+					flex-direction: row;
+					justify-content: flex-start;
+
+					.student_nav_controls {
+						font-family: Open Sans;
+						font-style: normal;
+						font-weight: 600;
+						font-size: 16px;
+					}
+
+					.student_name {
+						font-family: Open Sans;
+						font-style: normal;
+						font-weight: 600;
+						font-size: 16px;
+						line-height: 30px;
+						color: #333333;
+					}
+
+					span:first-child {
+						margin: 0 16px 0 0;
+						white-space: nowrap;
+					}
+
+					span:not(:first-child) {
+						height: 30px;
+						width: 30px;
+						margin: 0 5px 0 0;
+
+						pds-icon {
+							-webkit-box-flex: 1;
+							-ms-flex: 1 0 auto;
+							flex: 1 0 auto;
+							fill: #0075DB;
+							height: 20px;
+							width: 20px;
+							margin: 5px 0;
+						}
+					}
+				}
+
+				.student_details_information {
+					line-height: 18px;
+					margin: 3px 0;
+					font-family: Open Sans;
+					font-style: normal;
+					font-weight: 400;
+
+					#prov_enrollment_alert,
+					span,
+					p,
+					a {
+						&:empty {
+							display: none;
+						}
+
+						flex: none;
+						order: 0;
+						flex-grow: 0;
+						margin-inline-end: 12px;
+						font-size: 12px;
+						line-height: 18px;
+						white-space: nowrap;
+					}
+				}
+
+			}
+		}
+
+		.student_alerts {
+			display: flex;
+			margin: 0 0 9px 0;
+			line-height: 18px;
+			flex-wrap: wrap;
+
+			>a {
+				height: 18px;
+				width: 18px;
+				margin-right: 8px;
+
+				>img {
+					margin-left: -4px;
+					margin-top: 6px;
+				}
+
+				>pds-icon {
+					height: 15px;
+					width: 15px;
+
+					&.wallet {
+						fill: #3E8D21;
+					}
+
+					&.other {
+						fill: #C84C09;
+					}
+
+					&.medical {
+						fill: #CB1010;
+					}
+
+					&.birthday {
+						fill: #774696;
+					}
+
+					&.discipline {
+						fill: #0075DB;
+					}
+
+					&.guardian {
+						fill: #DA2F6B
+					}
+
+					svg {
+						height: inherit;
+						width: inherit;
+					}
+				}
+			}
+
+			div.feedback-alert {
+				font-size: 12px;
+				height: 15px;
+				display: flex;
+				align-items: center;
+				margin: 0px 0px;
+				overflow: hidden;
+				background-position-y: center;
+				background-size: 13px;
+				padding-left: 25px;
+				min-width: 202px;
+			}
+		}
+
+		.counselor {
+			position: relative;
+			top: 0;
+			left: 0;
+
+			>pds-icon>svg {
+				height: 20px;
+				width: 20px;
+				fill: #0066a5;
+			}
+		}
+	}
+
+	.staff_details {
+		display: flex;
+		margin: 0 5px auto 10px;
+		width: 100%;
+
+		.staff_details_container {
+			display: flex;
+			margin-top: 8px;
+			width: 100%;
+
+			.staff_details_avatar {
+				display: flex;
+				width: auto;
+				margin-left: 10px;
+				margin-right: 10px;
+				margin-bottom: 8px;
+
+				a {
+					position: relative;
+					top: 0;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					margin: auto;
+					display: inline-block;
+					height: fit-content;
+
+					img {
+						vertical-align: middle;
+					}
+				}
+			}
+
+			.staff_details_info {
+				display: flex;
+				flex-direction: column;
+				margin-left: 10px;
+				width: 100%;
+
+				.staff_details_info_name {
+					margin: 0;
+					border: none;
+					padding: 0;
+					line-height: 30px;
+					display: flex;
+					align-items: center;
+					color: #333333;
+					white-space: nowrap;
+					flex-direction: row;
+					justify-content: flex-start;
+
+					.staff_nav_controls,
+					span.staff_name {
+						font-family: Open Sans;
+						font-style: normal;
+						font-weight: 600;
+						font-size: 16px;
+						margin-right: 15px;
+					}
+
+					span.print_staff {
+						height: auto;
+						width: 30px;
+						margin-top: 6px;
+
+						pds-icon {
+							-webkit-box-flex: 1;
+							-ms-flex: 1 0 auto;
+							flex: 1 0 auto;
+							fill: #0075DB;
+							height: 20px;
+							width: 20px;
+							margin: 3px 0;
+						}
+					}
+				}
+
+				div.staff_details_information {
+					font-family: Open Sans;
+					font-style: normal;
+					font-weight: 400;
+					font-size: 12px;
+					line-height: 18px;
+					align-items: end;
+					justify-content: flex-start;
+					margin: 3px 0 8px;
+
+					span {
+						flex: none;
+						order: 0;
+						flex-grow: 0;
+						margin-inline-end: 12px;
+						white-space: nowrap;
+					}
+				}
+			}
+		}
+
+		#openPowersearchModal {
+			color: #0075DB;
+		}
+	}
+
+	@media screen and (max-width: 768px) {
+		.pds-app-actions {
+			.pds-global-search-content.pds-global-search {
+				width: fit-content;
+				.pds-global-search-controls {
+
+					button.pds-global-search {
+						pds-icon {
+							height: 32px;
+							width: 32px;
+
+							svg {
+								height: 20px !important;
+								width: 20px !important;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		#container-frame:not(.pds),
+		#container:not(.pds) {
+			>#content-main {
+				overflow: unset;
+			}
+			>#breadcrumbs {
+				.back-button {
+					display: none;
+				}
+			}
+		}
+
+		#container-frame.pds,
+		#container.pds {
+			&.pds-left-nav {
+				>#content-main {
+					overflow: auto;
+					.box-round, fieldset {
+						&:not(.screen_readers_only):not(.noborder) {
+							min-width: fit-content;
+						}
+					}
+				}
+				>#breadcrumbs {
+					.back-button {
+						display: flex;
+						margin-block: auto;
+						padding-inline-start: 20px;
+						a {
+							margin-inline: 5px;
+						}
+					}
+				}
+			}
+
+			&:not(.pds-left-nav) {
+				overflow: unset;
+
+				&.details_view {
+					overflow-y: hidden;
+					display: grid;
+					min-width: 632px;
+					grid-template-columns: 100%;
+					grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+					grid-template-areas:
+						"header"
+						"breadcrumbs"
+						"main";
+
+					&.anchor-favorites {
+						grid-template-columns: 1fr @favorites-anchor;
+						grid-template-areas:
+							"header header"
+							"breadcrumbs favorites"
+							"main favorites";
+						pss-favorites-menu-container {
+							grid-area: favorites;
+						}
+					}
+
+					#branding-powerschool {
+						display: none;
+					}
+
+					#content-main {
+
+						.back-button {
+							display: flex;
+							margin-block: 8px;
+							padding-inline-start: 20px;
+							a {
+								margin-inline: 5px;
+							}
+							~#page-heading-div {
+								h1 {
+									margin-block: 0 25px;
+									margin-inline: 20px;
+								}
+							}
+						}
+
+						.box-round, fieldset {
+							&:not(.screen_readers_only):not(.noborder) {
+								min-width: fit-content;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		&.powerlunch-new {
+			overflow-y: hidden;
+			display: grid;
+			min-width: 632px;
+			grid-template-columns: 100%;
+			grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+			grid-template-areas:
+				"header"
+				"breadcrumbs"
+				"main";
+
+			&.anchor-favorites {
+				grid-template-columns: 1fr @favorites-anchor;
+				grid-template-areas:
+					"header header"
+					"breadcrumbs favorites"
+					"main favorites";
+				pss-favorites-menu-container {
+					grid-area: favorites;
+				}
+			}
+
+			& #btnNoNav {
+				left: 5px;
+			}
+
+			.nav {
+				display: none;
+			}
+
+			#content-lunch {
+				overflow-y: auto;
+				height: ~"calc(100vh - 97px)";
+			}
+		}
+
+		&:not(.powerlunch-new) {
+			&.quickdata {
+				>#container.pds {
+					display: grid;
+					grid-template-columns: 50px ~"calc(75vw - 45px)" ~"calc(25vw - 5px)";
+					grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+					grid-template-areas:
+						"nav header header"
+						"breadcrumbs breadcrumbs breadcrumbs"
+						"main main data";
+
+					&.anchor-favorites {
+						grid-template-columns: 50px 3fr 1fr @favorites-anchor;
+						grid-template-areas:
+							"nav header header header"
+							"breadcrumbs breadcrumbs breadcrumbs favorites"
+							"main main data favorites";
+						pss-favorites-menu-container {
+							grid-area: favorites;
+						}
+					}
+
+					#btnNoNav {
+						display: none;
+					}
+
+					#pds-left-nav-wrapper,
+					#nav-main-frame {
+						width: auto;
+
+						ul {
+
+							&.pds-primary-nav-list,
+							&.pds-app-nav {
+								margin: 0;
+							}
+
+							//This should only apply to the list items in the main nav area so we use the direct descendent on the li.
+							&.pds-primary-nav-list>li {
+
+								a,
+								span {
+									display: flex;
+								}
+							}
+						}
+					}
+
+					#breadcrumbs {
+						>div.scope {
+							height: 100%;
+						}
+					}
+				}
+
+				&.uiNoNav>#container.new {
+					display: grid;
+					min-width: 632px;
+					grid-template-columns: 182px 90px minmax(min-content, 6fr) 2fr;
+					grid-template-rows: 61px 36px auto;
+					grid-template-areas:
+						"header header header header"
+						"breadcrumbs breadcrumbs breadcrumbs breadcrumbs"
+						"main main main data";
+
+					& #btnNoNav {
+						left: 5px;
+					}
+
+					.nav {
+						display: none;
+					}
+				}
+
+				&:not(.uiNoNav)>#container.new:not(.pds) {
+					display: grid;
+					min-width: 632px;
+					grid-template-columns: 182px 90px minmax(min-content, 6fr) 2fr;
+					grid-template-rows: 61px 36px auto;
+					grid-template-areas:
+						"header header header header"
+						"nav breadcrumbs breadcrumbs breadcrumbs"
+						"nav main main data";
+
+					#btnNoNav {
+						left: -2px;
+					}
+				}
+			}
+
+			&:not(.quickdata) {
+				&:not(.noquickdata) {
+					&.uiNoNav {
+
+						& #container.new,
+						#container-frame.new {
+							height: 100%;
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: auto;
+							grid-template-rows: 61px 36px auto;
+							grid-template-areas:
+								"header"
+								"breadcrumbs"
+								"main";
+
+							& #btnNoNav {
+								left: 5px;
+							}
+						}
+
+						.nav {
+							display: none;
+						}
+					}
+
+					&:not(.uiNoNav) {
+						& #container.pds {
+							display: grid;
+							grid-template-columns: 50px ~"calc(75vw - 45px)" ~"calc(25vw - 5px)";
+							grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+							grid-template-areas:
+								"nav header header"
+								"breadcrumbs breadcrumbs breadcrumbs"
+								"main main main";
+
+							&.anchor-favorites {
+								grid-template-columns: 50px 3fr 1fr @favorites-anchor;
+								grid-template-areas:
+									"nav header header header"
+									"breadcrumbs breadcrumbs breadcrumbs favorites"
+									"main main main favorites";
+								pss-favorites-menu-container {
+									grid-area: favorites;
+								}
+							}
+
+							#btnNoNav {
+								display: none;
+							}
+
+							#pds-left-nav-wrapper,
+							#nav-main-frame {
+								width: auto;
+
+								ul {
+
+									&.pds-primary-nav-list,
+									&.pds-app-nav {
+										margin: 0;
+									}
+
+									//This should only apply to the list items in the main nav area so we use the direct descendent on the li.
+									&.pds-primary-nav-list>li {
+
+										a,
+										span {
+											display: flex;
+										}
+									}
+								}
+							}
+
+							#breadcrumbs {
+								>div.scope {
+									height: 100%;
+								}
+							}
+						}
+
+						& #container.new:not(.pds) {
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: 182px 90px auto;
+							grid-template-rows: 61px 36px auto;
+							grid-template-areas:
+								"header header header"
+								"nav breadcrumbs breadcrumbs"
+								"nav main main";
+
+							#btnNoNav {
+								left: -2px;
+							}
+
+							.nav {
+								background-image: linear-gradient(to right, #f4f7fa 0, #f4f7fa 207px, #ccc 208px, #fff 209px);
+							}
+						}
+
+						& #container-frame.pds {
+							&:not(.pds-left-nav) {
+								display: grid;
+								grid-template-columns: 208px auto;
+								grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+								grid-template-areas:
+									"header header"
+									"nav breadcrumbs"
+									"nav main";
+
+								&.anchor-favorites {
+									grid-template-columns: 208px auto @favorites-anchor;
+									grid-template-areas:
+										"header header header"
+										"nav breadcrumbs favorites"
+										"nav main favorites";
+									pss-favorites-menu-container {
+										grid-area: favorites;
+									}
+								}
+
+								#btnNoNav {
+									left: 0;
+								}
+
+								.nav {
+									background-image: linear-gradient(to right, #f4f7fa 0, #f4f7fa 207px, #ccc 208px, #fff 209px);
+
+									#container-frame-menu {
+										width: 205px;
+									}
+								}
+
+								&.details_view {
+									overflow-y: hidden;
+									display: grid;
+									min-width: 632px;
+									grid-template-columns: 100%;
+									grid-template-rows: 61px auto auto 1fr;
+									grid-template-areas:
+										"header"
+										"breadcrumbs"
+										"main";
+									height: 100vh;
+
+									&.anchor-favorites {
+										grid-template-columns: 1fr @favorites-anchor;
+										grid-template-areas:
+											"header header"
+											"breadcrumbs favorites"
+											"main favorites";
+										pss-favorites-menu-container {
+											grid-area: favorites;
+										}
+									}
+
+									#btnNoNav,
+									#branding-powerschool {
+										display: none;
+									}
+
+									#content-main {
+										overflow: auto;
+									}
+
+									#hamburguesa-button {
+										margin: 0;
+										width: 49px;
+										margin-inline-start: 0;
+										padding-inline: 8px;
+										padding-block: 0;
+										cursor: pointer;
+										overflow: unset;
+										background-color: transparent;
+										border-radius: 0;
+
+										&:hover,
+										&:focus {
+											background-color: #00427C;
+										}
+
+										&:focus {
+											border: none;
+											outline: 2px solid #6af0e0;
+											outline-offset: -2px;
+										}
+
+										pds-icon {
+											fill: white;
+											margin-inline: 5px;
+
+											svg {
+												height: 24px;
+												width: 24px;
+											}
+										}
+									}
+
+									#container-frame.new .header-app-back,
+									#container.new .header-app-back {
+										margin-inline-start: 5px;
+									}
+
+									#details-view-nav {
+										display: none;
+
+										&.opened {
+											display: flex;
+											flex-direction: column;
+											z-index: 8000;
+											position: absolute;
+											inset: 0;
+											height: 100vh;
+											width: 240px;
+
+											#close-button-container,
+											#user-menu-button-container {
+												-webkit-box-flex: 0;
+												-ms-flex: 0 0 60px;
+												flex: 0 0 60px;
+												display: flex;
+												height: 60px;
+												width: 100%;
+												-webkit-box-align: center;
+												-ms-flex-align: center;
+												align-items: center;
+												background-color: #00427c;
+
+												>a,
+												details>summary {
+													width: 100%;
+													height: 100%;
+													align-items: center;
+													padding-bottom: 0;
+													padding-top: 0;
+													color: #ffffff;
+													font-family: Open Sans, sans-serif;
+													display: flex;
+													padding-inline-start: 20px;
+
+													&:hover,
+													&:focus {
+														background-color: #00427c;
+														text-decoration: underline;
+													}
+
+													&:focus {
+														outline: none;
+													}
+
+													pds-icon {
+														fill: #ffffff;
+
+														svg {
+															height: 24px;
+															width: 24px;
+														}
+													}
+
+													span {
+														color: #ffffff;
+														margin-inline-start: 19px;
+													}
+												}
+
+												>a {
+													padding-inline-start: 19px;
+												}
+
+												details {
+													height: 100%;
+
+													>summary {
+														list-style: none;
+														width: 100%;
+														height: 100%;
+														position: relative;
+														cursor: pointer;
+														padding: 0;
+
+														&::-webkit-details-marker {
+															display: none;
+														}
+													}
+
+													div {
+														position: absolute;
+														bottom: 50px;
+														background-color: #00427c;
+														width: 100%;
+														z-index: 801;
+
+														ul {
+															margin: 0;
+
+															>li {
+																list-style: none;
+																height: 50px;
+																padding-inline: 15px 20px;
+																display: flex;
+																flex: 1;
+																align-items: center;
+
+																pds-icon {
+																	fill: #ffffff;
+																	height: 42px;
+																	padding: 0;
+																	width: 42px;
+
+																	svg {
+																		height: 24px;
+																		width: 24px;
+																		border: none;
+																		border-radius: 0;
+																	}
+																}
+
+																a {
+																	color: #ffffff;
+																	padding-inline-start: 10px;
+																}
+															}
+														}
+													}
+												}
+											}
+
+											#user-menu-button-container {
+												height: 50px;
+												-webkit-box-flex: 0;
+												-ms-flex: 0 0 50px;
+												flex: 0 0 50px;
+
+												details {
+													>summary {
+														>span.user-initials {
+															display: -webkit-box;
+															display: -ms-flexbox;
+															display: flex;
+															margin-inline: 20px 5px;
+															margin-block: auto;
+															padding: 0;
+															font-weight: 700;
+															-webkit-box-align: center;
+															-ms-flex-align: center;
+															align-items: center;
+															-webkit-box-pack: center;
+															-ms-flex-pack: center;
+															justify-content: center;
+															height: 24px;
+															width: 24px;
+															font-size: 12px;
+															border-radius: 50%;
+															border: 2px solid #8fcbff;
+														}
+
+														>span:last-child {
+															margin-inline-start: 10px;
+															overflow: hidden;
+															-o-text-overflow: ellipsis;
+															text-overflow: ellipsis;
+															display: -webkit-box;
+															-webkit-box-orient: vertical;
+															-webkit-line-clamp: 2;
+															line-height: 24px;
+															width: 155px;
+															max-height: 48px;
+
+															&::after {
+																content: "";
+																position: absolute;
+																inset: calc(50% - 5px) 210px;
+																opacity: .5;
+																border-inline-start: 5px solid transparent;
+																border-block-end: 6px solid #a8b1b2;
+																border-inline-end: 5px solid transparent;
+															}
+														}
+													}
+
+													&[open]>summary>span:last-child {
+														&::after {
+															border-block-start: 6px solid #a8b1b2;
+															border-block-end: none;
+														}
+													}
+												}
+
+											}
+
+											.pds-vertical-tabs {
+												background: #FFFFFF;
+												list-style: none;
+												-webkit-box-flex: 1;
+												-ms-flex: 1 1 auto;
+												flex: 1 1 auto;
+												width: 100%;
+												height: 100%;
+												margin: 0;
+												padding: 0;
+												font-family: Open Sans, sans-serif;
+												font-weight: 400;
+												font-size: 14px;
+												line-height: 24px;
+												-webkit-box-sizing: border-box;
+												box-sizing: border-box;
+												overflow-x: hidden;
+
+												&.user-menu-opened>li>details>div.fly-out-container {
+													height: calc(~"100vh - 210px");
+												}
+
+												>li {
+													min-height: 53px;
+													list-style: none;
+													width: 100%;
+
+													>details {
+														display: flex;
+														flex-direction: row;
+														color: #333333;
+														text-decoration: none;
+														width: 100%;
+
+														&[open] {
+															>summary {
+																display: none;
+															}
+														}
+
+														>summary {
+															list-style: none;
+															padding: 15px 20px 15px 20px;
+															max-width: 210px;
+															position: relative;
+															cursor: pointer;
+
+															&::-webkit-details-marker {
+																display: none;
+															}
+
+															&:hover,
+															&:focus {
+																background-color: #F1F4F4;
+																text-decoration: underline;
+															}
+
+															&:focus {
+																outline: none;
+															}
+
+															>span {
+																padding: 0;
+																display: flex;
+																margin-inline: 0 5px;
+																margin-block: 0;
+
+																&::after {
+																	content: "";
+																	position: absolute;
+																	inset: calc(50% - 5px) 215px;
+																	opacity: .5;
+																	border-inline-start: 6px solid #677274;
+																	border-block-start: 5px solid transparent;
+																	border-block-end: 5px solid transparent;
+																}
+															}
+
+															&.pds-is-active {
+																background-color: #C2E2FF !important;
+																font-weight: 600;
+																border-left: none;
+
+																>span::after {
+																	opacity: 1;
+																}
+
+																&:hover {
+																	background-color: #c2e2ff;
+																}
+
+																a {
+																	background: unset;
+																}
+															}
+
+															&:hover {
+																text-decoration: underline;
+																background-color: #F1F4F4;
+															}
+
+															pds-icon svg {
+																display: none;
+																height: 20px;
+																width: 20px;
+															}
+														}
+
+														>div.fly-out-container {
+															position: absolute;
+															z-index: 800;
+															background: white;
+															display: flex;
+															flex-direction: column;
+															flex-wrap: nowrap;
+															inset-block-start: 60px;
+															inset-inline-start: 0;
+															height: calc(~"100vh - 110px");
+															width: 100%;
+															overflow-y: auto;
+
+															.back {
+																height: 45px;
+																background-color: #f1f4f4;
+																display: flex;
+																align-items: center;
+																border-bottom: 1px solid #c4c9ca;
+
+																&::before {
+																	content: "";
+																	position: absolute;
+																	margin-block: 21px;
+																	margin-inline: 21px 0;
+																	opacity: .5;
+																	border-inline-end: 6px solid #0075DB;
+																	border-block-start: 6px solid transparent;
+																	border-block-end: 6px solid transparent;
+																}
+
+																&:hover,
+																&:focus {
+																	&::before {
+																		border-inline-end: 6px solid #677274;
+																	}
+																}
+
+																>a {
+																	padding-inline: 50px;
+																	width: auto;
+																	min-width: fit-content;
+
+																	&:hover,
+																	&:focus {
+																		background-color: transparent;
+																		text-decoration: underline;
+																	}
+
+																	&:focus {
+																		outline: none;
+																	}
+																}
+															}
+
+															div.subcategory {
+																height: max-content;
+																padding-block-end: 20px;
+																padding-block-start: 10px;
+																padding-inline-start: 5px;
+																width: 100%;
+
+																>h3 {
+																	border-bottom: none;
+																	margin-inline: 10px 0;
+																	margin-block: 0;
+																	padding-block: 0;
+																	height: auto;
+																	display: flex;
+																	align-items: center;
+
+																	>span {
+																		font-family: 'Open Sans';
+																		font-style: normal;
+																		font-weight: 600;
+																		font-size: 18px;
+																		line-height: 27px;
+																		color: #0075db;
+																		padding-block: 5px;
+																		float: unset;
+																		text-align: start;
+																	}
+																}
+
+																>ul {
+																	display: flex;
+																	width: 100%;
+																	list-style: none;
+																	flex-direction: column;
+																	flex-wrap: wrap;
+																	margin: 0;
+
+																	li {
+																		display: flex;
+																		list-style: none;
+																		height: 50px;
+
+																		&.app-link {
+																			height: 53px;
+
+																		}
+
+																		a {
+																			padding: 0 15px;
+																			align-items: center;
+																			font-size: 14px;
+																			line-height: 21px;
+																			padding: 5px 10px 6px;
+																			width: 100%;
+
+																			.pds-is-active {
+																				border-left: none;
+
+																				&:hover,
+																				&:focus {
+																					background-color: #c2e2ff;
+																				}
+																			}
+
+																			&:hover,
+																			&:focus {
+																				background-color: #F1F4F4;
+																				text-decoration: underline;
+																			}
+
+																			&:focus {
+																				outline: none;
+																			}
+																		}
+																	}
+																}
+															}
+
+															div.fly-out-menu-item {
+																height: fit-content;
+																margin-block-start: 10px;
+																min-height: 50px;
+
+																&:nth-of-type(1) {
+																	margin-block-start: 0;
+																}
+
+																>a {
+																	align-items: center;
+																	font-size: 14px;
+																	line-height: 21px;
+																	padding: 5px 10px 6px;
+																	border-radius: 4px;
+																	height: 100%;
+
+																	&.app-link {
+
+																		&:hover,
+																		&:focus {
+																			background-color: #F1F4F4;
+																			text-decoration: underline;
+																		}
+
+																		&:focus {
+																			outline: none;
+																		}
+																	}
+
+																	&.pds-is-active {
+																		background-color: #c2e2ff;
+																		border-left: none;
+
+																		&:hover,
+																		&:focus {
+																			background-color: #c2e2ff;
+																		}
+																	}
+																}
+															}
+
+															>div:nth-of-type(2) {
+																margin-block-start: 0;
+																padding-block-start: 5px;
+															}
+														}
+
+														ul {
+															list-style: none;
+
+															li.app-link {
+																&.pds-is-active {
+																	background-color: #C2E2FF;
+																	font-weight: 600;
+																	border-left: none;
+
+																	&:hover {
+																		text-decoration: underline;
+																		background-color: #C2E2FF;
+																	}
+
+																}
+
+																&:hover {
+																	background-color: #F1F4F4;
+																	text-decoration: underline;
+																}
+
+																a {
+																	padding: 5px 6px;
+																}
+															}
+														}
+													}
+
+													>a {
+														display: -webkit-box;
+														display: -ms-flexbox;
+														display: flex;
+														color: #333333;
+														position: relative;
+														text-decoration: none;
+														padding: 15px 15px 14px 20px;
+														cursor: pointer;
+														overflow-wrap: break-word;
+
+														&:hover,
+														&:focus {
+															background-color: #F1F4F4;
+														}
+
+														>.pds-vertical-tab-text {
+															max-width: 100%;
+															margin: 0;
+															padding: 0;
+															-webkit-box-sizing: border-box;
+															box-sizing: border-box;
+														}
+													}
+												}
+											}
+										}
+									}
+
+									.menuOverlay {
+										position: fixed;
+										top: 0;
+										left: 0;
+										right: 0;
+										bottom: 0;
+										background: rgba(0, 0, 0, 0.25);
+										z-index: 7999;
+									}
+								}
+							}
+
+							&.pds-left-nav {
+								display: grid;
+								grid-template-columns: 50px ~"calc(75vw - 45px)" ~"calc(25vw - 5px)";
+								grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+								grid-template-areas:
+									"nav header header"
+									"breadcrumbs breadcrumbs breadcrumbs"
+									"main main main";
+
+								&.anchor-favorites {
+									grid-template-columns: 50px 3fr 1fr @favorites-anchor;
+									grid-template-areas:
+										"nav header header header"
+										"breadcrumbs breadcrumbs breadcrumbs favorites"
+										"main main main favorites";
+									pss-favorites-menu-container {
+										grid-area: favorites;
+									}
+								}
+
+								#btnNoNav {
+									display: none;
+								}
+							}
+
+							#pds-left-nav-wrapper,
+							#nav-main-frame {
+								width: auto;
+
+								ul {
+
+									&.pds-app-nav,
+									&.pds-primary-nav-list {
+										margin: 0;
+									}
+
+									//This should only apply to the list items in the main nav area so we use the direct descendent on the li.
+									&.pds-primary-nav-list>li {
+
+										a,
+										span {
+											display: flex;
+										}
+									}
+								}
+							}
+
+							#breadcrumbs {
+								>div.scope {
+									height: 100%;
+								}
+							}
+						}
+
+						& #container-frame.new:not(.pds) {
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: auto;
+							grid-template-rows: 61px 36px auto;
+							grid-template-areas:
+								"header"
+								"breadcrumbs"
+								"main";
+						}
+					}
+				}
+
+				&.noquickdata {
+					&.uiNoNav {
+						& #container.new {
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: auto 40px;
+							grid-template-rows: 61px 36px auto;
+							grid-template-areas:
+								"header header"
+								"breadcrumbs breadcrumbs"
+								"main data";
+
+							& #btnNoNav {
+								left: 5px;
+							}
+
+							.nav {
+								display: none;
+							}
+						}
+					}
+
+					&:not(.uiNoNav) {
+						& #container.pds {
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: 50px ~"calc(100vw - 90px)" 40px;
+							grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+							grid-template-areas:
+								"nav header header"
+								"breadcrumbs breadcrumbs breadcrumbs"
+								"main main data";
+
+							&.anchor-favorites {
+								grid-template-columns: 50px 1fr 40px @favorites-anchor;
+								grid-template-areas:
+									"nav header header header"
+									"breadcrumbs breadcrumbs breadcrumbs favorites"
+									"main main data favorites";
+								pss-favorites-menu-container {
+									grid-area: favorites;
+								}
+							}
+
+							#btnNoNav {
+								display: none;
+							}
+
+							#pds-left-nav-wrapper,
+							#nav-main-frame {
+								width: auto;
+
+								ul {
+
+									&.pds-primary-nav-list,
+									&.pds-app-nav {
+										margin: 0;
+									}
+
+									//This should only apply to the list items in the main nav area so we use the direct descendent on the li.
+									&.pds-primary-nav-list>li {
+
+										a,
+										span {
+											display: flex;
+										}
+									}  pss-favorites-menu-container {
+										grid-area: favorites;
+									}
+								}
+							}
+
+							#breadcrumbs {
+								>div.scope {
+									height: 100%;
+								}
+							}
+						}
+
+						& #container.new:not(.pds) {
+							display: grid;
+							min-width: 632px;
+							grid-template-columns: 182px 90px minmax(min-content, 6fr) 40px;
+							grid-template-rows: 61px 36px auto;
+							grid-template-areas:
+								"header header header header"
+								"nav breadcrumbs breadcrumbs breadcrumbs"
+								"nav main main data";
+						}
+
+						#btnNoNav {
+							left: -2px;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/* print styles */
+	@media print {
+		&:not(.powerlunch-new) {
+
+			&:not(body.quickdata),
+			&body.noquickdata {
+
+				#container.new,
+				#container-frame.new {
+					display: grid;
+					min-width: 632px;
+					grid-template-columns: 100%;
+					grid-template-rows: 61px 51px ~"calc(100vh - 112px)";
+					grid-template-areas:
+						"header"
+						"breadcrumbs"
+						"main";
+				}
+			}
+
+			&body.quickdata {
+				#container.new {
+					display: grid;
+					min-width: 632px;
+					grid-template-columns: 100%;
+					grid-template-rows: 61px 60px auto auto;
+					grid-template-areas:
+						"header"
+						"breadcrumbs"
+						"main"
+						"data";
+				}
+			}
+		}
+	}
+}
+
+body.noScroll {
+	overflow-y: hidden;
+	background-image: none;
+}
+
+body.backgroundAdjusted {
+	background-position: 6px top;
+}
+
+em.highlightText {
+	font-style: normal;
+	background-color: #a2d4ec;
+}
+
+& .pds-user-menu-theme.pds-user-menu li.pds-user-menu {
+	margin-left: -10px;
+	padding-left: 5px;
+}
+
+& #pds-header.pds-app-header-bar {
+
+	@media print {
+		background: none;
+	}
+
+	header {
+		flex: 1 0 auto;
+
+		@media print {
+			display: block;
+		}
+	}
+
+	.pds-app-actions {
+		flex: 1 1 50%;
+
+		@media print {
+			display: block;
+		}
+	}
+}
+
+#container-frame.new,
+#container.new {
+	@media print {
+
+		.pds-app-actions,
+		#pluginLinkDrawerPanel,
+		#pds-tippy-scope {
+			display: none;
+		}
+
+		margin: 0 !important;
+	}
+
+	& #container-frame-menu {
+		width: 208px;
+	}
+
+	& #tools2 li {
+
+		& span.comphelppopuptext {
+			&.concealed {
+				display: none;
+			}
+
+			display: table;
+			width: 180px;
+			height: 100px;
+			background-color: #fff;
+			color: #444;
+			text-align: center;
+			padding: 8px 0;
+			position: absolute;
+			z-index: 1;
+			top: 46px;
+			margin-left: -76px;
+			border-width: 1px;
+			border-style: solid;
+			border-color: #eee;
+			border-radius: 4px;
+			box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+
+			&:after {
+				content: "";
+				position: absolute;
+				top: -12%;
+				left: 53%;
+				margin-left: -5px;
+				border-width: 7px;
+				border-style: solid;
+				border-color: transparent transparent #eee transparent;
+			}
+		}
+
+		& span div.comphelppopupHeader {
+			background-color: #eee;
+			color: #707070;
+			text-align: left;
+			position: absolute;
+			top: 0;
+			height: 16px;
+			width: 90%;
+			padding: 4px 4px 8px 14px;
+		}
+
+		& span div.comphelppopupLines.systemHelp {
+			margin-top: 20px;
+		}
+
+		& span div.comphelppopupLines {
+			text-align: left;
+			height: 28px;
+			width: 100%;
+			padding: 4px 4px 8px 4px;
+			white-space: nowrap;
+		}
+	}
+
+	& #icon-btn-translate a {
+		background: unset;
+	}
+
+	& #btnNotifications {
+		background: unset;
+		position: unset;
+		color: unset;
+		display: flex;
+
+		span {
+			padding: 4px 6px;
+			margin-left: 16px;
+			top: unset;
+			right: unset;
+		}
+	}
+
+	& .pds-app-header-bar {
+		@media print {
+			background-color: #fff;
+		}
+
+		.grid-mixin(1, 1, 4, 1, header);
+	}
+
+	& #branding-powerschool {
+		background-repeat: no-repeat;
+		background-position: 0 center;
+		background-size: auto 40px;
+		height: 60px;
+		line-height: 40px;
+		font-family: Karla, sans-serif;
+		font-size: 24px;
+		font-weight: 600;
+
+		@media screen {
+			background-size: 0;
+
+			img {
+				margin-right: 10px;
+				width: 30px;
+				height: 40px;
+			}
+		}
+
+		@media print {
+			margin: 0 0 0 20px;
+			color: transparent;
+
+			img {
+				display: none;
+			}
+		}
+
+		a {
+			display: block;
+			width: 330px;
+			height: 70px;
+		}
+
+		body#alert & {
+			/* alert pages */
+			margin: 0 30px;
+		}
+	}
+
+	& .header-app-back {
+		background-repeat: no-repeat;
+		background-position: 0 center;
+		margin-inline-start: 15px;
+		height: 60px;
+		line-height: 40px;
+		font-family: Open Sans, sans-serif;
+		font-size: 16px;
+		font-weight: 600;
+		flex: 0 0 250px;
+		align-items: center;
+		color: #FFFFFF;
+		display: flex;
+
+		@media screen {
+			background-size: 0;
+
+			svg {
+				margin-right: 15px;
+				width: 34px;
+				height: 34px;
+				fill: #ffffff;
+			}
+
+			use {
+				transform: scale(1.2) translate(12%, 12%);
+			}
+
+			&:hover {
+				svg {
+					outline: none;
+					border: none;
+					cursor: pointer;
+					border-radius: 50%;
+					background: #ffffff;
+					z-index: 1;
+					fill: #00427C;
+				}
+
+				& {
+					text-decoration: underline;
+				}
+			}
+
+			&+#branding-powerschool {
+				display: none;
+			}
+		}
+
+		@media print {
+			display: none;
+		}
+	}
+
+	& #tools2 {
+		position: relative;
+		display: flex;
+
+		li {
+			height: 100%;
+
+			a:hover {
+				background-color: unset;
+			}
+		}
+	}
+
+	#tools2 li .comphelppopuptext a {
+		padding: 0 5px;
+		display: inline-block;
+		width: auto;
+
+		&:focus {
+			outline-color: #11aaeb;
+			outline-width: 1px;
+			outline-style: solid;
+		}
+	}
+
+	& div.nav,
+	#pds-left-nav-wrapper {
+		.grid-mixin(2, 1, 1, 2, nav);
+	}
+
+	& #btnContMax {
+		display: none;
+	}
+
+	& #breadcrumbs {
+		.grid-mixin(2, 2, 3, 1, breadcrumbs);
+		background-color: white;
+		margin: 0;
+		border-bottom: solid 1px lightgray;
+		line-height: 2em;
+		min-width: 0;
+		display: inline-flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		flex: 1 1 auto;
+
+		@media screen {
+			width: auto;
+			height: 99%;
+		}
+
+		@media print {
+			width: 100%;
+			height: auto;
+		}
+
+
+
+		&.powerlunch-breadcrumbs {
+			width: 100%;
+		}
+
+
+		& div.breadcrumbs {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+
+			@media screen {
+				display: inline;
+				margin: auto;
+			}
+
+			@media print {
+
+				display: none;
+			}
+
+			flex: 1 1 auto;
+			padding: 4px 0 0 8px;
+		}
+
+		& div.scope {
+			user-select: none;
+			-webkit-user-select: none;
+			position: relative;
+			background-color: white;
+			height: 35px;
+			right: 0;
+			display: flex;
+			flex: 1 1 auto;
+			justify-content: flex-end;
+			margin-bottom: 4px;
+			padding: 0 10px 0 0px;
+		}
+
+		& div.staff_nav_controls,
+		div.student_nav_controls {
+			user-select: none;
+			-webkit-user-select: none;
+			position: relative;
+			background-color: white;
+			height: 35px;
+			right: 0;
+			display: flex;
+			flex: 0 1 auto;
+			justify-content: flex-start;
+			align-items: center;
+			padding: 0;
+			margin-right: 16px;
+
+			>p.navPrevNext {
+				display: flex;
+				margin: 0;
+
+				button.selectionFilter {
+					height: 32px;
+					width: fit-content;
+					background-color: #fff;
+					border: 1px solid #0075db;
+					color: #0075db;
+					display: flex;
+					justify-items: flex-end;
+					font-family: Open Sans;
+					font-style: normal;
+					font-weight: 600;
+					font-size: 16px;
+					line-height: 24px;
+					text-align: center;
+					margin: auto 5px;
+
+					pds-icon {
+						fill: #0075db;
+						margin: 0 0 0 5px;
+					}
+				}
+
+				a.button {
+					height: 30px;
+					width: 30px;
+					max-width: 30px;
+					max-height: 30px;
+					padding: 0;
+					margin: 0;
+					background-color: #fff;
+					border: 1px solid #E0E0E0;
+					color: #333333;
+
+					pds-icon {
+						fill: #677274;
+						margin: 5px;
+						height: 20px;
+						width: 20px;
+					}
+
+					&.searchbarHelp {
+						margin: 0;
+						padding: 0;
+						height: 32px;
+						width: 32px;
+						max-width: 32px;
+						max-height: 32px;
+						border: 0 none;
+						background-color: #0066a5;
+						color: #ffffff;
+
+						pds-icon {
+							fill: #ffffff;
+							margin: 6px;
+							height: 20px;
+							width: 20px;
+						}
+					}
+				}
+
+				span.powersearch_modify {
+					position: relative;
+					bottom: 14px;
+
+					pss-powersearch {
+						position: relative;
+						top: 5px;
+					}
+
+					.modifySelectionModal {
+						display: flex;
+						justify-content: center;
+						font-size: 12px;
+						font-family: 'Open Sans', sans-serif;
+						color: #0075DB;
+
+						&:hover {
+							text-decoration: underline;
+						}
+					}
+				}
+			}
+
+		}
+
+		& #currentscope {
+			font-weight: bold;
+			display: flex;
+			position: relative;
+			bottom: unset;
+			right: unset;
+			width: 100%;
+			height: 100%;
+			justify-content: flex-end;
+			align-items: center;
+			padding-block: 0;
+			padding-inline: 0 10px;
+			max-width: fit-content;
+			margin-inline-start: auto;
+
+			pss-termpicker,
+			pss-schoolpicker {
+				line-height: 32px;
+				display: flex;
+
+				span>a>pds-icon {
+					fill: #0075db;
+					height: 22px;
+					width: 22px;
+					padding: 1px 4px;
+
+					&:hover {
+						color: #0075db;
+						cursor: pointer;
+					}
+				}
+			}
+
+			span>a>pds-icon {
+				fill: @link-color;
+				height: 22px;
+				width: 22px;
+				padding: 1px 4px;
+
+				&:hover {
+					color: @link-color-hover;
+					cursor: pointer;
+				}
+			}
+
+			& pss-schoolpicker {
+				margin-right: 20px;
+			}
+
+			& div.sched_year {
+				white-space: nowrap;
+			}
+		}
+
+		& div#studentNavControls,
+		div#staffNavControls {
+			@media print {
+				display: none;
+			}
+		}
+
+		pss-powersearch {
+			.dialogOverlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.25);
+				z-index: 8000;
+			}
+		}
+	}
+
+	& #content-main,
+	#content-main-no-left-margin {
+		@media print {
+			page-break-after: auto;
+		}
+
+		margin-left: 0;
+		.grid-mixin(3, 2, 2, 1, main);
+
+		& button.search {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+			height: 28px;
+		}
+
+		& .new-experience-banner-wrapper {
+			top: 5px;
+		}
+
+		.full-width-banner {
+			@media print {
+				display: none;
+			}
+		}
+	}
+
+	& .quick-data {
+		overflow-y: auto;
+		margin-left: 0;
+		.grid-mixin(3, 4, 1, 1, data);
+
+		background-color: #eee;
+
+		h2 {
+			border-bottom: none;
+		}
+	}
+
+	& #usercontext-bar {
+		background-color: inherit;
+		left: 211px;
+		color: black;
+
+		& a {
+			color: @link-color;
+		}
+	}
+
+	.dropDownList {
+		&.concealed {
+			display: none
+		}
+
+		position: absolute;
+		background: white;
+		display: flex;
+		flex-direction: column;
+		z-index: 200;
+		height: auto;
+		width: auto;
+		box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+
+		& .list-item {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			&.multi-line:not(.non-selectable) {
+				min-height: 43px;
+			}
+
+			>div {
+				margin-right: 20px;
+			}
+
+			&.selected {
+				background-color: #f2f7fa;
+				padding: 0;
+
+				>span:first-child {
+					position: relative;
+					width: 4px;
+					height: 31px;
+					top: 0;
+					left: 0;
+					background: #137ABB;
+					margin-right: 4px;
+					display: flex;
+				}
+			}
+
+			&:hover,
+			&:focus,
+			&.highlighted {
+				background-color: #f2f2f2;
+				cursor: pointer;
+
+				.selected {
+					background-color: #f2f2f2;
+				}
+			}
+		}
+
+		.second-line {
+			font-size: 12px;
+			line-height: 1em;
+			padding-bottom: 5px;
+			color: gray;
+		}
+	}
+
+}
+
+.nav div.prefSwitch,
+#nav-main div.prefSwitch,
+#nav-main-menu div.prefSwitch,
+#nav-main-frame div.prefSwitch {
+	margin-top: 10px;
+
+	& label {
+		margin-left: 13px;
+	}
+
+	& label.on,
+	label.off {
+		margin-left: 59px;
+	}
+}
+
+pds-icon {
+	@media print {
+		display: none;
+	}
+
+	&.table {
+		background-color: #0066A5;
+		-webkit-mask: url(../img/icon-database.svg) no-repeat 50% 50%;
+		mask: url(../img/icon-database.svg) no-repeat 50% 50%;
+	}
+
+	&.inactive {
+		fill: #707070;
+	}
+}
+
+/* gear icon in bulletin */
+.gear {
+	margin: 5px;
+
+	& pds-icon {
+		height: 26px;
+		width: 26px;
+		fill: @button-color;
+	}
+}
+
+.gearshift {
+	margin-top: 5px;
+}
+
+.gear-button {
+	background-color: transparent;
+	padding: .2em .2em;
+	line-height: .2em;
+	border: 1px solid #0075DB;
+
+	/* gear icon in graduation planner */
+	pds-icon[name=gear] svg {
+		fill: #0075DB;
+
+	}
+}
+
+.gear-button:hover {
+	background-color: transparent;
+}
+
+.gear-button:focus {
+	background-color: transparent;
+}
+
+
+/* quick data */
+.quick-data h2 {
+	border: 0;
+}
+
+
+/* quick data charts */
+#quickDataCharts {
+	margin: 0 0 20px;
+
+	h4 {
+		width: -webkit-fill-available;
+		width: -webkit-calc(~"100% - 10px");
+		width: calc(~"100% - 10px");
+		padding: 0 0 0 10px;
+		background: #FFFFFF;
+		margin: 0;
+		border-radius: 4px 4px 0 0;
+		line-height: 2.4em;
+		position: relative;
+		display: inline-block;
+		vertical-align: top;
+		white-space: nowrap;
+	}
+}
+
+.chart-footer {
+	background: #FFFFFF;
+	margin: -4px 0 0 0;
+	border-top: @border-style;
+	border-radius: 0 0 4px 4px;
+	line-height: 2.4em;
+	position: relative;
+	padding-left: 1px;
+	display: flex;
+	justify-content: flex-end;
+	vertical-align: top;
+	white-space: nowrap;
+
+	>a {
+		margin: 1px 10px 1px 1px;
+	}
+}
+
+.wider-chart-footer .wider-chart-title {
+	width: -webkit-calc(~"100% - 32px");
+	width: calc(~"100% - 32px");
+	width: -webkit-fill-available;
+}
+
+#quickDataCharts>div>div {
+	line-height: 1.5em;
+	margin: 0 0 20px 20px;
+	display: inline-block;
+	vertical-align: top;
+	background: #FFFFFF;
+	border-radius: 4px;
+}
+
+#quickDataCharts>div>div>div {
+	display: inline-flex;
+	width: -webkit-calc(~"100% - 1px");
+	width: calc(~"100% - 1px");
+	overflow: hidden;
+}
+
+@media screen and (min-width: 2048px) {
+	.smaller-chart-footer .smaller-chart-title {
+		width: -webkit-calc(~"50% - 32px");
+		width: calc(~"50% - 32px");
+		width: -webkit-fill-available;
+	}
+
+	.smallerCharts>div {
+		width: -webkit-calc(~"50% - 32px");
+		width: calc(~"50% - 32px");
+	}
+}
+
+@media screen and (max-width: 2048px) {
+	.smaller-chart-footer .smaller-chart-title {
+		width: -webkit-calc(~"100% - 32px");
+		width: calc(~"100% - 32px");
+		width: -webkit-fill-available;
+	}
+
+	.smallerCharts>div {
+		width: -webkit-calc(~"100% - 32px");
+		width: calc(~"100% - 32px");
+	}
+}
+
+.widerCharts>div {
+	width: -webkit-calc(~"100% - 32px");
+	width: calc(~"100% - 32px");
+}
+
+.chart-content {
+	margin: 0;
+	padding-left: 1px;
+}
+
+#pds-header {
+	z-index: inherit;
+}
+
+.fluid-form>div:not(.button-row)>div>label.fluid-form-checkbox-label {
+	display: inline;
+}
+
+/* quick data charts */
+/* quick data */
+
+/* condense left nav button moves down if banner showing */
+.banner-shift {
+	#btnNoNav {
+		top: 80px;
+	}
+}
+
+.tippy-popper.pds-user-menu .tippy-tooltip.popover-theme.user-menu-theme.pds-user-menu {
+	display: block;
+}
+
+.pds-app-header-bar {
+	height: 60px !important;
+}
+
+pss-searchbar {
+	button.ui-datepicker-trigger {
+		padding: 5px 8px;
+		height: 32px;
+		width: 32px;
+	}
+}
+
+@media print {
+	#pds-left-nav-wrapper {
+		display: none;
+	}
+
+	#nav {
+		display: none;
+	}
+
+	.pds-vertical-tabs {
+		display: none;
+	}
+
+	.horizontal-tab-nav {
+		display: none;
+	}
+
+	#branding-powerschool {
+		display: block;
+	}
+
+}
+
+#container-frame.pds,
+#container.pds {
+	#page-heading-div {
+		display: flex;
+		margin-bottom: 5px
+	}
+
+	#page-heading-alerts {
+		height: fit-content;
+	}
+}
+
+#stud_dob.details-navs-view-health-dob {
+	margin: 10px;
+}
+
+.yui-skin-sam .yui-panel .bd {
+	max-height: calc(~"89vh - 40px");
+	overflow: auto;
+}
+
+/* favorites */
+h1.favorites-feature {
+	display: inline-flex;
+
+	>span {
+		position: absolute;
+		right: 30px;
+	}
+}
+
+h1+span,
+h1+pss-add-favorite+span {
+	position: absolute;
+	right: 30px;
+	top: 35px;
+	display: flex;
+	align-items: center;
+}
+
+pss-powersearch,
+pss-charts,
+pds-global-search,
+pss-schoolpicker,
+pss-termpicker,
+pss-student-type-ahead,
+pss-staff-type-ahead,
+.pds-button-contents button,
+#navPrev,
+#navNext,
+.student_details,
+.staff_details,
+pss-integrations-attendance .dialog .contentpane .codes ul>li.selected {
+	pds-icon svg {
+		height: inherit !important;
+		width: inherit !important;
+	}
+}
+
+pss-integrations-attendance {
+
+	button pds-icon,
+	button .pds-icon-plus {
+		margin-left: 0;
+	}
+}
+
+#modaccesstable td:nth-child(2) {
+	width: 54%;
+}
+
+@media print {
+	pds-app-nav {
+		display: none !important;
+	}
+
+	pss-favorites-menu {
+		display: none !important;
+	}
+}
+
+#validationIcons {
+	display: inline-flex;
+}
+
+html&[dir=rtl] div.dropDownButton {
+    button {
+        &::before {
+            transform: rotateY(180deg);
+        }
+    }
+}
